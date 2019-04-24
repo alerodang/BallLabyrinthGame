@@ -1,13 +1,17 @@
+//TODO:
+// Reducir tamaño pelota
+import java.util.List;
+import java.util.Arrays;
+
 float x,y,z;
 float rotateX, rotateZ;
 float speed, maxAngle, ballSpeed;
-float xBall, zBall;
 Ball ball;
 Board board;
+List <Wall> walls = new ArrayList();
+CollisionController collisionController;
 
 void setup() {
-  ball = new Ball();
-  board = new Board();
   size(1000,1000,P3D);
   x = width/2;
   y = height/2;
@@ -17,12 +21,26 @@ void setup() {
   speed = 5;
   maxAngle = 45;
   ballSpeed = 5;
+  collisionController = new CollisionController();
+  ball = new Ball(30);
+  board = new Board();
+  walls.addAll(board.getWalls());
 }
 
 void draw() {
-  foo();
+  noFill();
+  configureScene();
   board.drawBoard();
   ball.drawBall();
+  board.drawWalls();
+  collisionController.detectCollisions();
+}
+
+void configureScene(){
+  background(240);
+  translate(x,y,z);
+  rotateX(radians(rotateX));
+  rotateZ(radians(rotateZ));
 }
 
 void keyPressed() {
@@ -36,13 +54,5 @@ void keyPressed() {
     } else if (keyCode == UP && rotateX <= maxAngle) {
       rotateX += speed;
     }
-    print(rotateX);
   }
-}
-
-void foo(){
-  background(240);
-  translate(x,y,z);
-  rotateX(radians(rotateX));
-  rotateZ(radians(rotateZ));
 }
