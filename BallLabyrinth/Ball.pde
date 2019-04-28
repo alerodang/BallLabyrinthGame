@@ -1,40 +1,41 @@
-class Ball{
+class Ball {
   
   private float xCoordinate;
   private float zCoordinate;
-  private boolean collisionUp = false;
-  private boolean collisionDown = false;
+  private boolean collisionBehind = false;
+  private boolean collisionInfront = false;
   private boolean collisionLeft = false;
   private boolean collisionRight = false;
-  private int radio;
+  private final int radius, ballSpeed;
   
-  public Ball(int radio){
-    this.radio = radio;
+  public Ball(int radius, int ballSpeed){
+    this.radius = radius;
+    this.ballSpeed = ballSpeed;
   }
     
   void drawBall(){
     updateBallPosition();
     pushMatrix();
     translate(xCoordinate,-45,zCoordinate);
-    sphere(radio);
+    sphere(radius);
     popMatrix();
   }
   
   void updateBallPosition(){
     printPositionData();
             
-    if (!ballIsCollisioningDown() && !ballIsCollisioningUp())
+    if (!ballIsCollisioningInfront() && !ballIsCollisioningBehind())
       zCoordinate -= ballSpeed * rotateX / 45;
     
     if (!ballIsCollisioningLeft() && !ballIsCollisioningRight())
       xCoordinate += ballSpeed * rotateZ / 45;
   }
   
-  boolean ballIsCollisioningDown(){
-    return collisionDown; // rotateX > 0 va hacia delante la bola
+  boolean ballIsCollisioningInfront(){
+    return collisionInfront; // rotateX > 0 va hacia delante la bola
   } 
-  boolean ballIsCollisioningUp(){
-    return collisionUp; // rotateX < 0 va hacia atras la bola
+  boolean ballIsCollisioningBehind(){
+    return collisionBehind; // rotateX < 0 va hacia atras la bola
   } 
   boolean ballIsCollisioningLeft (){
     return collisionLeft;
@@ -44,9 +45,9 @@ class Ball{
   } 
   
   void printPositionData(){
-    println(rotateX, collisionDown, collisionUp, ";", 
+    println(rotateX, collisionInfront, collisionBehind, ";", 
             rotateZ, collisionLeft, collisionRight, ";", 
-            ballIsCollisioningDown(), ballIsCollisioningUp(), ";",
+            ballIsCollisioningInfront(), ballIsCollisioningBehind(), ";",
             ballIsCollisioningLeft(), ballIsCollisioningRight());
   }
   
@@ -58,16 +59,16 @@ class Ball{
     return zCoordinate;
   };
   
-  int getRadio(){
-    return this.radio;
+  int getRadius(){
+    return this.radius;
   }
   
-  void setCollisionUp(boolean collisionUp){
-    this.collisionUp = collisionUp;
+  void setCollisionBehind(boolean collisionBehind){
+    this.collisionBehind = collisionBehind;
   }
   
-  void setCollisionDown(boolean collisionDown){
-    this.collisionDown = collisionDown;
+  void setCollisionInFront(boolean collisionInfront){
+    this.collisionInfront = collisionInfront;
   }
   
   void setCollisionLeft(boolean collisionLeft){
@@ -76,6 +77,13 @@ class Ball{
   
   void setCollisionRight(boolean collisionRight){
     this.collisionRight = collisionRight;
+  }
+  
+  void resetCollisions() {
+    this.collisionRight = false;
+    this.collisionLeft = false;
+    this.collisionBehind = false;
+    this.collisionInfront = false;
   }
   
 }
