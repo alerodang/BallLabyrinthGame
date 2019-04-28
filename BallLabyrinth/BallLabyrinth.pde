@@ -1,15 +1,23 @@
-//TODO:
-// Reducir tamaño pelota
+/**TODO:
+ - Reducir tamaño pelota
+ - Girar la pelota al moverse
+ - Agujeros
+ - Interacción con sensor
+ - Choque por el lateral de los muros
+*/
+
+/** TOFIX
+  - When collision with right or left wall, the ball remains stuck to that wall
+*/
 import java.util.List;
 import java.util.Arrays;
 
-float x,y,z;
+private float x,y,z;
 float rotateX, rotateZ;
-float speed, maxAngle, ballSpeed;
-Ball ball;
+float speed, maxAngle;
+private Ball ball;
 Board board;
-List <Wall> walls = new ArrayList();
-CollisionController collisionController;
+CollisionDetector collisionDetector;
 
 void setup() {
   size(1000,1000,P3D);
@@ -20,11 +28,9 @@ void setup() {
   rotateX = 0;
   speed = 5;
   maxAngle = 45;
-  ballSpeed = 5;
-  collisionController = new CollisionController();
-  ball = new Ball(30);
+  ball = new Ball(30, 5);
   board = new Board();
-  walls.addAll(board.getWalls());
+  collisionDetector = new CollisionDetector(board, ball);
 }
 
 void draw() {
@@ -32,8 +38,7 @@ void draw() {
   configureScene();
   board.drawBoard();
   ball.drawBall();
-  board.drawWalls();
-  collisionController.detectCollisions();
+  collisionDetector.detectCollisions();
 }
 
 void configureScene(){

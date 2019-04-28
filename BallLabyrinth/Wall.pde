@@ -1,67 +1,68 @@
 class Wall{
-  private int xCoordinate, yCoordinate, zCoordinate;
+  private int centralXCoordinate, centralYCoordinate, centralZCoordinate;
   private int wallLength;
-  private int xLength, zLength;
-  private char orientation;
-  private int x0, x1, z0, z1;
+  private Orientation orientation;
+  private int initialXCoordinate, endingXCoordinate, initialZCoorinate, endingZCoordinate;
   private int wallWidth;
+  private final static int wallHeight = 40;
   
-  public Wall(int x, int y, int z, int wallLength, int wallWidth, char orientation){
-    this.xCoordinate = x;
-    this.yCoordinate = y;
-    this.zCoordinate = z;
-    this.wallLength = wallLength;
+  public Wall(int x, int z, int wallLength, Orientation orientation){
+    this.centralXCoordinate = x;
+    this.centralYCoordinate = -30;
+    this.centralZCoordinate = z;
     this.orientation = orientation;
-    this.wallWidth = wallWidth;
-    if (orientation == 'x'){
-      xLength = wallLength;
-      zLength = 20;
-      x0 = x - wallLength/2;
-      x1 = x + wallLength/2;
-    } else if (orientation == 'z'){
-      xLength = 20;
-      zLength = wallLength;
-      z0 = z - wallLength/2;
-      z1 = z + wallLength/2;
-    }
+    
+    this.wallLength = wallLength;
+    this.wallWidth = 20;
+    
+    this.initialXCoordinate = x - wallLength/2;
+    this.endingXCoordinate = x + wallLength/2;
+  
+    this.initialZCoorinate = z - wallLength/2;
+    this.endingZCoordinate = z + wallLength/2;
   }
   
   void drawWall(){
     pushMatrix();
-    translate(this.xCoordinate,this.yCoordinate,this.zCoordinate);
-    box(xLength,40,zLength);
+    translate(this.centralXCoordinate,this.centralYCoordinate,this.centralZCoordinate);
+    if(wallInXOrientation()) box(this.wallLength, wallHeight, this.wallWidth);
+    else box(this.wallWidth, wallHeight, this.wallLength);
     popMatrix();
   }
   
-  int getXCoordinate(){
-    return xCoordinate;
+  int getCentralXCoordinate(){
+    return centralXCoordinate;
   }
     
-  float getZCoordinate(){
-    return zCoordinate;
+  float getCentralZCoordinate(){
+    return centralZCoordinate;
   }
   
-  int getX0(){
-    return x0;
+  int getInitialXCoordinate(){
+    return initialXCoordinate;
   }
   
-  int getX1(){
-    return x1;
+  int getEndingXCoorinate(){
+    return endingXCoordinate;
   }
   
-  int getZ0(){
-    return z0;
+  int getInitialXCoorinate(){
+    return initialZCoorinate;
   }
   
-  int getZ1(){
-    return z1;
+  int getEndingZCoorinate(){
+    return endingZCoordinate;
   }
   
-  char getOrientation(){
+  Orientation getOrientation(){
     return this.orientation;
   }
   
-  int getWidth(){
+  int getWidth() {
     return this.wallWidth;
+  }
+  
+  private boolean wallInXOrientation() {
+    return this.orientation == Orientation.X;
   }
 }
