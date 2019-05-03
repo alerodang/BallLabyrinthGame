@@ -2,15 +2,17 @@ class Ball {
   
   private float xCoordinate;
   private float zCoordinate;
+  private float xSpeed, zSpeed;
   private boolean collisionBehind = false;
   private boolean collisionInfront = false;
   private boolean collisionLeft = false;
   private boolean collisionRight = false;
-  private final int radius, ballSpeed;
+  private final int radius;
+  private final float ballSpeed;
   
   public Ball(int radius, int ballSpeed){
     this.radius = radius;
-    this.ballSpeed = ballSpeed;
+    this.ballSpeed = (float)ballSpeed / 400.;
   }
     
   void drawBall(){
@@ -18,17 +20,26 @@ class Ball {
     pushMatrix();
     translate(xCoordinate,-45,zCoordinate);
     sphere(radius);
+    println(zSpeed);
     popMatrix();
   }
   
   void updateBallPosition(){
-    printPositionData();
+    //printPositionData();
+    zSpeed += ballSpeed * rotateX;
+    xSpeed += ballSpeed * rotateZ;
             
     if (!ballIsCollisioningInfront() && !ballIsCollisioningBehind())
-      zCoordinate -= ballSpeed * rotateX / 45;
+      zCoordinate -= zSpeed;
     
     if (!ballIsCollisioningLeft() && !ballIsCollisioningRight())
-      xCoordinate += ballSpeed * rotateZ / 45;
+      xCoordinate += xSpeed;
+  }
+  
+  void frontalCollision(){
+    if (zSpeed > 0.1) zSpeed *= -0.6;
+    else zSpeed = 0;
+    zCoordinate -= zSpeed;
   }
   
   boolean ballIsCollisioningInfront(){

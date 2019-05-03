@@ -23,9 +23,9 @@ class CollisionDetector{
   }
   
   CollisionType getHorizonalCollisionTypeWith(Wall wall){
-    if(wall.getInitialXCoordinate() < ball.getXCoordinate() && ball.getXCoordinate() < wall.getEndingXCoorinate()){
-      if(detectCollisionBehind(wall)) return CollisionType.BEHIND;
-      else if(detectCollisionInFront(wall)) return CollisionType.INFRONT;
+    if(wall.getInitialXCoordinate() < ball.getXCoordinate() + ball.getRadius() && ball.getXCoordinate() - ball.getRadius() < wall.getEndingXCoorinate()){
+      if(detectCollisionBehind(wall)) {ball.frontalCollision(); return CollisionType.BEHIND;}
+      else if(detectCollisionInFront(wall)) {ball.frontalCollision(); return CollisionType.INFRONT;}
     }
     return CollisionType.NONE;
   }
@@ -45,7 +45,7 @@ class CollisionDetector{
   }
   
   CollisionType getVerticalCollistionType(Wall wall){
-    if(wall.getInitialXCoorinate() < ball.getZCoordinate() && ball.getZCoordinate()/2 < wall.getEndingZCoorinate()){
+    if(wall.getInitialZCoorinate() < ball.getZCoordinate() - ball.getRadius() && ball.getZCoordinate()/2 < wall.getEndingZCoorinate()){
       if(detectCollisionRight(wall)) return CollisionType.RIGHT;
       else if(detectCollisionLeft(wall)) return CollisionType.LEFT;
     }

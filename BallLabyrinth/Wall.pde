@@ -46,7 +46,7 @@ class Wall{
     return endingXCoordinate;
   }
   
-  int getInitialXCoorinate(){
+  int getInitialZCoorinate(){
     return initialZCoorinate;
   }
   
