@@ -18,7 +18,6 @@ float speed, maxAngle;
 private Ball ball;
 Board board;
 CollisionDetector collisionDetector;
-
 void setup() {
   size(1000,1000,P3D);
   x = width/2;
@@ -36,9 +35,9 @@ void setup() {
 void draw() {
   noFill();
   configureScene();
-  board.drawBoard();
-  ball.drawBall();
+  board.drawBoard();  
   collisionDetector.detectCollisions();
+  ball.drawBall();
 }
 
 void configureScene(){
