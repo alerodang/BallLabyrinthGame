@@ -16,8 +16,10 @@ private float x,y,z;
 float rotateX, rotateZ;
 float speed, maxAngle;
 private Ball ball;
-Board board;
-CollisionDetector collisionDetector;
+private Board board;
+private CollisionDetector collisionDetector;
+private FallingDetector fallingDetector;
+
 void setup() {
   size(1000,1000,P3D);
   x = width/2;
@@ -30,6 +32,7 @@ void setup() {
   ball = new Ball(30, 5);
   board = new Board();
   collisionDetector = new CollisionDetector(board, ball);
+  fallingDetector = new FallingDetector(board, ball);
 }
 
 void draw() {
@@ -37,6 +40,7 @@ void draw() {
   configureScene();
   board.drawBoard();  
   collisionDetector.detectCollisions();
+  fallingDetector.detectFalling();
   ball.drawBall();
 }
 
