@@ -2,53 +2,59 @@ class Ball {
   
   private float xCoordinate;
   private float zCoordinate;
-  private boolean collisionBehind = false;
-  private boolean collisionInfront = false;
-  private boolean collisionLeft = false;
-  private boolean collisionRight = false;
-  private final int radius, ballSpeed;
+  private float xSpeed, zSpeed;
+  private final int radius;
+  private final float ballSpeed;
   
   public Ball(int radius, int ballSpeed){
     this.radius = radius;
-    this.ballSpeed = ballSpeed;
+    this.ballSpeed = (float)ballSpeed / 600.;
   }
     
   void drawBall(){
-    updateBallPosition();
+    updateBallSpeed();
     pushMatrix();
     translate(xCoordinate,-45,zCoordinate);
     sphere(radius);
     popMatrix();
   }
   
-  void updateBallPosition(){
-    printPositionData();
-            
-    if (!ballIsCollisioningInfront() && !ballIsCollisioningBehind())
-      zCoordinate -= ballSpeed * rotateX / 45;
-    
-    if (!ballIsCollisioningLeft() && !ballIsCollisioningRight())
-      xCoordinate += ballSpeed * rotateZ / 45;
+  void updateBallSpeed(){
+    zSpeed += ballSpeed * rotateX;
+    xSpeed += ballSpeed * rotateZ;
+    zSpeed *= 0.99; // rozamiento
+    xSpeed *= 0.99;
   }
   
-  boolean ballIsCollisioningInfront(){
-    return collisionInfront; // rotateX > 0 va hacia delante la bola
-  } 
-  boolean ballIsCollisioningBehind(){
-    return collisionBehind; // rotateX < 0 va hacia atras la bola
-  } 
-  boolean ballIsCollisioningLeft (){
-    return collisionLeft;
-  } 
-  boolean ballIsCollisioningRight(){
-    return collisionRight;
-  } 
+  void stopSpeed(boolean z){
+    if (z) zSpeed = 0;
+    else xSpeed = 0;
+  }
   
-  void printPositionData(){
-    println(rotateX, collisionInfront, collisionBehind, ";", 
-            rotateZ, collisionLeft, collisionRight, ";", 
-            ballIsCollisioningInfront(), ballIsCollisioningBehind(), ";",
-            ballIsCollisioningLeft(), ballIsCollisioningRight());
+  void noCollision(){
+    zCoordinate -= zSpeed;
+    xCoordinate += xSpeed;
+  }
+  
+  void frontalCollision(){
+    println(zSpeed, zCoordinate);
+    if (abs(zSpeed) > 0.4) zSpeed *= -0.6;
+    else zSpeed = 0;
+    zCoordinate -= zSpeed;
+  }
+  
+  void lateralCollision(){
+    if (abs(xSpeed) > 0.4) xSpeed *= -0.6;
+    else xSpeed = 0;
+    xCoordinate += xSpeed;
+  }
+  
+  float getXSpeed(){
+    return xSpeed;
+  }
+  
+  float getZSpeed(){
+    return zSpeed;
   }
   
   float getXCoordinate(){
@@ -61,29 +67,6 @@ class Ball {
   
   int getRadius(){
     return this.radius;
-  }
-  
-  void setCollisionBehind(boolean collisionBehind){
-    this.collisionBehind = collisionBehind;
-  }
-  
-  void setCollisionInFront(boolean collisionInfront){
-    this.collisionInfront = collisionInfront;
-  }
-  
-  void setCollisionLeft(boolean collisionLeft){
-    this.collisionLeft = collisionLeft;
-  }
-  
-  void setCollisionRight(boolean collisionRight){
-    this.collisionRight = collisionRight;
-  }
-  
-  void resetCollisions() {
-    this.collisionRight = false;
-    this.collisionLeft = false;
-    this.collisionBehind = false;
-    this.collisionInfront = false;
-  }
+  }  
   
 }
