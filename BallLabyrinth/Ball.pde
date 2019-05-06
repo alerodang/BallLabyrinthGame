@@ -9,12 +9,14 @@ class Ball {
   public Ball(int radius, int ballSpeed){
     this.radius = radius;
     this.ballSpeed = (float)ballSpeed / 600.;
+    xCoordinate = 240;
+    zCoordinate = 240;
   }
     
   void drawBall(float rotateX, float rotateZ){
     updateBallSpeed(rotateX, rotateZ);
     pushMatrix();
-    translate(xCoordinate,-45,zCoordinate);
+    translate(xCoordinate,-35,zCoordinate);
     sphere(radius);
     popMatrix();
   }
@@ -69,8 +71,8 @@ class Ball {
   }  
   
   public void reset() {
-    zCoordinate = 0;
-    xCoordinate = 0;
+    zCoordinate = 240;
+    xCoordinate = 240;
   }
   
 }

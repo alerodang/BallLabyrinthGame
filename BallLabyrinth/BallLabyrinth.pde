@@ -73,10 +73,7 @@ void keyPressed() {
     }
   }
   
-  if (key == 'r') {
-    board.setPlaying(true);
-    println("pressed");
-  }
+  if (key == 'r') board.setPlaying(true);
 }
 
 void showLoseMessage() {
