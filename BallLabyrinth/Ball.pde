@@ -11,15 +11,15 @@ class Ball {
     this.ballSpeed = (float)ballSpeed / 600.;
   }
     
-  void drawBall(){
-    updateBallSpeed();
+  void drawBall(float rotateX, float rotateZ){
+    updateBallSpeed(rotateX, rotateZ);
     pushMatrix();
     translate(xCoordinate,-45,zCoordinate);
     sphere(radius);
     popMatrix();
   }
   
-  void updateBallSpeed(){
+  void updateBallSpeed(float rotateX, float rotateZ){
     zSpeed += ballSpeed * rotateX;
     xSpeed += ballSpeed * rotateZ;
     zSpeed *= 0.99; // rozamiento
@@ -37,7 +37,6 @@ class Ball {
   }
   
   void frontalCollision(){
-    println(zSpeed, zCoordinate);
     if (abs(zSpeed) > 0.4) zSpeed *= -0.6;
     else zSpeed = 0;
     zCoordinate -= zSpeed;
@@ -68,5 +67,10 @@ class Ball {
   int getRadius(){
     return this.radius;
   }  
+  
+  public void reset() {
+    zCoordinate = 0;
+    xCoordinate = 0;
+  }
   
 }

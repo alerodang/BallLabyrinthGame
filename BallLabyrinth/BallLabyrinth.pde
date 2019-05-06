@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Arrays;
 
 private float x,y,z;
-float rotateX, rotateZ;
+private float rotateX, rotateZ;
 float speed, maxAngle;
 private Ball ball;
 private Board board;
@@ -37,11 +37,20 @@ void setup() {
 
 void draw() {
   noFill();
-  configureScene();
-  board.drawBoard();  
+  if (!board.getPlaying()) {
+    rotateZ = 0;
+    rotateX = 0;
+    ball.reset();
+    configureScene();
+    showLoseMessage();
+  } else {
+    configureScene();
+  }
+  
+  board.drawBoard();
   collisionDetector.detectCollisions();
   fallingDetector.detectFalling();
-  ball.drawBall();
+  ball.drawBall(rotateX, rotateZ);
 }
 
 void configureScene(){
@@ -63,4 +72,14 @@ void keyPressed() {
       rotateX += speed;
     }
   }
+  
+  if (key == 'r') {
+    board.setPlaying(true);
+    println("pressed");
+  }
+}
+
+void showLoseMessage() {
+  textSize(40);
+  text("Perdiste! Para reiniciar pulsa r", -270, -200, 0);
 }
