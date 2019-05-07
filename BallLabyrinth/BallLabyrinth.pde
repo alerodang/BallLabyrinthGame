@@ -13,6 +13,7 @@ import peasy.*;
 */
 import java.util.List;
 import java.util.Arrays;
+import processing.serial.*;
 
 private float x,y,z;
 private float rotateX, rotateZ;
@@ -22,6 +23,12 @@ private Board board;
 private CollisionDetector collisionDetector;
 private FallingDetector fallingDetector;
 private PeasyCam peasyCam;
+
+Serial myPort;
+String val;
+float [] stackRotateZ = {0,0,0,0,0};
+float [] stackRotateX = {0,0,0,0,0};
+float maxRotateZ, maxRotateX;
 
 void setup() {
   size(1000,1000,P3D);
@@ -37,6 +44,9 @@ void setup() {
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
   peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
+  
+  String portName = Serial.list()[0];
+  myPort = new Serial(this, portName,9600);
 }
 
 void draw() {
@@ -44,6 +54,8 @@ void draw() {
   if (!board.getPlaying()) {
     rotateZ = 0;
     rotateX = 0;
+    maxRotateZ = 0;
+    maxRotateX = 0;
     ball.reset();
     configureScene();
     showLoseMessage();
@@ -55,6 +67,7 @@ void draw() {
   collisionDetector.detectCollisions();
   fallingDetector.detectFalling();
   ball.drawBall(rotateX, rotateZ);
+  controlBoard1();
 }
 
 void configureScene(){
@@ -83,4 +96,28 @@ void keyPressed() {
 void showLoseMessage() {
   textSize(40);
   text("Perdiste! Para reiniciar pulsa r", -270, -200, 0);
+}
+void controlBoard(){
+  if(myPort.available()>0){
+     val = myPort.readStringUntil('\n');
+     if(val!=null && split(val,' ').length > 2){
+       arrayCopy(append(stackRotateZ,float(split(val,' ')[3])), 1, stackRotateZ = new float[5], 0, 5);
+       arrayCopy(append(stackRotateX,float(split(val,' ')[2])), 1, stackRotateX = new float[5], 0, 5);
+       rotateZ = -90*sort(stackRotateZ)[2];
+       rotateX = 90*sort(stackRotateX)[2];
+     }
+  } 
+}
+void controlBoard1(){
+  if(myPort.available()>0){
+     val = myPort.readStringUntil('\n');
+     if(val!=null && split(val,' ').length > 2){
+        maxRotateZ = -90*float(split(val,' ')[3]);
+        maxRotateX = 90*float(split(val,' ')[2]);
+     }
+  } 
+  if(maxRotateZ>rotateZ+2) rotateZ+=1;
+  else if(maxRotateZ<rotateZ-2) rotateZ-=1;
+  if(maxRotateX>rotateX+2) rotateX+=1;
+  else if(maxRotateX<rotateX-2) rotateX-=1;
 }
