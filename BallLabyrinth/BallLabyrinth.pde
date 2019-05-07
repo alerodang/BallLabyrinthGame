@@ -1,3 +1,5 @@
+import peasy.*;
+
 /**TODO:
  - Reducir tamaño pelota
  - Girar la pelota al moverse
@@ -19,6 +21,7 @@ private Ball ball;
 private Board board;
 private CollisionDetector collisionDetector;
 private FallingDetector fallingDetector;
+private PeasyCam peasyCam;
 
 void setup() {
   size(1000,1000,P3D);
@@ -33,6 +36,7 @@ void setup() {
   board = new Board();
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
+  peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
 }
 
 void draw() {

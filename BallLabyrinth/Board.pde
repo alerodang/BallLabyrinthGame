@@ -53,7 +53,7 @@ class Board{
     
     walls.add(new Wall(100, 0, 400, Orientation.X));
     walls.add(new Wall(200, 150, 200, Orientation.X));
-    walls.add(new Wall(-110, 150, 140, Orientation.X));
+    walls.add(new Wall(-112, 150, 140, Orientation.X));
     
     walls.add(new Wall(0, -200, 200, Orientation.Z));
     walls.add(new Wall(-50, 210, 140, Orientation.Z));

@@ -39,13 +39,13 @@ class Ball {
   }
   
   void frontalCollision(){
-    if (abs(zSpeed) > 0.4) zSpeed *= -0.6;
+    if (abs(zSpeed) > 0.1) zSpeed *= -0.6;
     else zSpeed = 0;
     zCoordinate -= zSpeed;
   }
   
   void lateralCollision(){
-    if (abs(xSpeed) > 0.4) xSpeed *= -0.6;
+    if (abs(xSpeed) > 0.1) xSpeed *= -0.6;
     else xSpeed = 0;
     xCoordinate += xSpeed;
   }
