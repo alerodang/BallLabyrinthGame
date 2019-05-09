@@ -36,12 +36,12 @@ void setup() {
   board = new Board();
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
-  peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
+  //peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
 }
 
 void draw() {
-  noFill();
   if (!board.getPlaying()) {
+    camera(width/2, 100, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     rotateZ = 0;
     rotateX = 0;
     ball.reset();
