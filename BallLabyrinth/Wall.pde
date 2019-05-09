@@ -5,8 +5,9 @@ class Wall{
   private int leftXCoord, rightXCoord;
   private int topZCoord, bottomZCoord;
   private final static int wallHeight = 40, wallWidth = 20;
+  private final PShape box;
   
-  public Wall(int x, int z, int wallLength, Orientation orientation){
+  public Wall(int x, int z, int wallLength, Orientation orientation, PImage texture){
     this.centralXCoordinate = x;
     this.centralYCoordinate = -30;
     this.centralZCoordinate = z;
@@ -19,19 +20,22 @@ class Wall{
       rightXCoord = x + wallLength / 2;
       topZCoord = z - wallWidth / 2;
       bottomZCoord = z + wallWidth / 2;
+      box = createShape(BOX, this.wallLength, wallHeight, wallWidth);
     } else {
       leftXCoord = x - wallWidth / 2;
       rightXCoord = x + wallWidth / 2;
       topZCoord = z - wallLength / 2;
       bottomZCoord = z + wallLength / 2;
+      box = createShape(BOX, wallWidth, wallHeight, this.wallLength);
     }
+    box.setTexture(texture);
   }
   
   void drawWall(){
     pushMatrix();
-    translate(this.centralXCoordinate,this.centralYCoordinate,this.centralZCoordinate);
-    if(wallInXOrientation()) box(this.wallLength, wallHeight, wallWidth);
-    else box(wallWidth, wallHeight, this.wallLength);
+    translate(this.centralXCoordinate, this.centralYCoordinate, this.centralZCoordinate);
+    noStroke();
+    shape(box);
     popMatrix();
   }
   private boolean wallInXOrientation() {

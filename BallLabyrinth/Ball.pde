@@ -16,8 +16,13 @@ class Ball {
   void drawBall(float rotateX, float rotateZ){
     updateBallSpeed(rotateX, rotateZ);
     pushMatrix();
+    pushStyle();
+    fill(200, 200, 200);
     translate(xCoordinate,-35,zCoordinate);
+    directionalLight(100, 100, 100, -50, 200, -1);
+    shininess(100);
     sphere(radius);
+    popStyle();
     popMatrix();
   }
   

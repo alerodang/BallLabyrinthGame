@@ -48,6 +48,7 @@ void draw() {
     configureScene();
     showLoseMessage();
   } else {
+    camera(width/2, -200, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     configureScene();
   }
   
@@ -62,6 +63,8 @@ void configureScene(){
   translate(x,y,z);
   rotateX(radians(rotateX));
   rotateZ(radians(rotateZ));
+  lights();
+  lightSpecular(255, 255, 255);
 }
 
 void keyPressed() {
@@ -82,5 +85,8 @@ void keyPressed() {
 
 void showLoseMessage() {
   textSize(40);
-  text("Perdiste! Para reiniciar pulsa r", -270, -200, 0);
+  pushStyle();
+  fill(40, 40, 40);
+  text("Perdiste! Para reiniciar pulsa r", -270, -300, 0);
+  popStyle();
 }
