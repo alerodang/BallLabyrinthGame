@@ -3,26 +3,20 @@ class Board{
   private List<Wall> walls;
   private List<Hole> holes;
   private boolean playing;
-  private boolean won;
   private PImage texture;
-  private PImage flagTexture;
   private PShape endFlag;
-  private PShape box;
   
   public Board(){
     texture = loadImage("wood.jpg");
     walls = createWalls();
     holes = createHoles();
     playing = true;
-    won = false;
     endFlag = loadShape("Flag/obj/objFlag.obj");
-    flagTexture = loadImage("flag.jpg");
-    endFlag.setTexture(flagTexture);
-    box = createShape(BOX, 600, 20, 600);
-    box.setTexture(texture);
   }
   
   void drawBoard(){
+    PShape box = createShape(BOX, 600, 20, 600);
+    box.setTexture(texture);
     shape(box);
     this.drawWalls();
     this.drawHoles();
@@ -45,16 +39,8 @@ class Board{
     return playing;
   }
   
-  public boolean getWon() {
-    return won;
-  }
-  
   public void setPlaying(boolean playing) {
     this.playing = playing;
-  }
-  
-  public void setWon(boolean won) {
-    this.won = won;
   }
   
   private void drawWalls(){
@@ -91,13 +77,11 @@ class Board{
   }
   
   private void drawFlag() {
-    pushMatrix();
     pushStyle();
     rotateX(PI);
-    translate(230, 10, 230);
+    translate(220, 10, 220);
     scale(8);
     shape(endFlag);
     popStyle();
-    popMatrix();
   }
 }

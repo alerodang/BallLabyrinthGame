@@ -21,7 +21,7 @@ private Ball ball;
 private Board board;
 private CollisionDetector collisionDetector;
 private FallingDetector fallingDetector;
-private PeasyCam peasyCam;
+private VictoryDetector victoryDetector;
 
 void setup() {
   size(1000,1000,P3D);
@@ -36,17 +36,21 @@ void setup() {
   board = new Board();
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
-  //peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
+  victoryDetector = new VictoryDetector(board, ball);
 }
 
 void draw() {
-  if (!board.getPlaying()) {
+  if (!board.getPlaying() || board.getWon()) {
     camera(width/2, 100, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     rotateZ = 0;
     rotateX = 0;
     ball.reset();
     configureScene();
-    showLoseMessage();
+    if (board.getWon()) {
+      showVictoryMessage();
+    } else {
+      showLoseMessage(); 
+    }
   } else {
     camera(width/2, -200, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     configureScene();
@@ -55,6 +59,7 @@ void draw() {
   board.drawBoard();
   collisionDetector.detectCollisions();
   fallingDetector.detectFalling();
+  victoryDetector.checkVictory();
   ball.drawBall(rotateX, rotateZ);
 }
 
@@ -80,7 +85,10 @@ void keyPressed() {
     }
   }
   
-  if (key == 'r') board.setPlaying(true);
+  if (key == 'r') {
+    board.setPlaying(true);
+    board.setWon(false);
+  }
 }
 
 void showLoseMessage() {
@@ -88,5 +96,13 @@ void showLoseMessage() {
   pushStyle();
   fill(40, 40, 40);
   text("Perdiste! Para reiniciar pulsa r", -270, -300, 0);
+  popStyle();
+}
+
+void showVictoryMessage() {
+  textSize(40);
+  pushStyle();
+  fill(40, 40, 40);
+  text("Felicidades, ganaste! Para reiniciar pulsa r", -400, -300, 0);
   popStyle();
 }
