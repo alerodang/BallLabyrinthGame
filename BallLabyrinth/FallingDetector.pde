@@ -16,7 +16,7 @@ public class FallingDetector {
   
   private boolean ballIsOverHole(Hole hole) {
     
-    int maximumDistanceToFall = hole.getWidth() / 2 - ball.getRadius();
+    int maximumDistanceToFall = hole.getWidth() / 3;
     
     return abs(hole.getXCoordinate() - ball.getXCoordinate()) < maximumDistanceToFall &&
            abs(hole.getZCoordinate() - ball.getZCoordinate()) < maximumDistanceToFall;

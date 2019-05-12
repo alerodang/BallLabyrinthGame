@@ -14,6 +14,7 @@ import peasy.*;
 import java.util.List;
 import java.util.Arrays;
 import processing.serial.*;
+import processing.sound.*;
 
 private float x,y,z;
 private float rotateX, rotateZ;
@@ -22,7 +23,9 @@ private Ball ball;
 private Board board;
 private CollisionDetector collisionDetector;
 private FallingDetector fallingDetector;
-private PeasyCam peasyCam;
+private VictoryDetector victoryDetector;
+SoundFile winSound, hitSound, loseSound;
+boolean soundPlaying, finishSoundPlaying;
 
 Serial myPort;
 String val;
@@ -41,31 +44,43 @@ void setup() {
   maxAngle = 45;
   ball = new Ball(30, 5);
   board = new Board();
+  soundPlaying=false;
+  finishSoundPlaying=false;
+  hitSound = new SoundFile(this, "sound/hit.wav");
+  winSound = new SoundFile(this, "sound/win.wav");
+  loseSound = new SoundFile(this, "sound/lose.wav");
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
   peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
   
   String portName = Serial.list()[0];
   myPort = new Serial(this, portName,9600);
+  victoryDetector = new VictoryDetector(board, ball);
 }
 
 void draw() {
-  noFill();
-  if (!board.getPlaying()) {
+  if (!board.getPlaying() || board.getWon()) {
+    camera(width/2, 100, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     rotateZ = 0;
     rotateX = 0;
     maxRotateZ = 0;
     maxRotateX = 0;
     ball.reset();
     configureScene();
-    showLoseMessage();
+    if (board.getWon()) {
+      showVictoryMessage();
+    } else {
+      showLoseMessage(); 
+    }
   } else {
+    camera(width/2, -200, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     configureScene();
   }
   
   board.drawBoard();
   collisionDetector.detectCollisions();
   fallingDetector.detectFalling();
+  victoryDetector.checkVictory();
   ball.drawBall(rotateX, rotateZ);
   controlBoard();
 }
@@ -75,6 +90,8 @@ void configureScene(){
   translate(x,y,z);
   rotateX(radians(rotateX));
   rotateZ(radians(rotateZ));
+  lights();
+  lightSpecular(255, 255, 255);
 }
 
 void keyPressed() {
@@ -90,12 +107,42 @@ void keyPressed() {
     }
   }
   
-  if (key == 'r') board.setPlaying(true);
+  if (key == 'r') {
+    board.setPlaying(true);
+    board.setWon(false);
+    finishSoundPlaying=false;
+  }
 }
 
 void showLoseMessage() {
+  if(!finishSoundPlaying)thread("loseSound");
   textSize(40);
-  text("Perdiste! Para reiniciar pulsa r", -270, -200, 0);
+  pushStyle();
+  fill(40, 40, 40);
+  text("Perdiste! Para reiniciar pulsa r", -270, -300, 0);
+  popStyle();
+}
+
+void showVictoryMessage() {
+  if(!finishSoundPlaying)thread("winSound");
+  textSize(40);
+  pushStyle();
+  fill(40, 40, 40);
+  text("Felicidades, ganaste! Para reiniciar pulsa r", -400, -300, 0);
+  popStyle();
+}
+
+void hitSound() {
+  hitSound.play();
+  soundPlaying=true;
+}
+void winSound() {
+  winSound.play();
+  finishSoundPlaying=true;
+}
+void loseSound() {
+  loseSound.play();
+  finishSoundPlaying=true;
 }
 void controlBoardDirect(){
   if(myPort.available()>0){

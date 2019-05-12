@@ -16,8 +16,13 @@ class Ball {
   void drawBall(float rotateX, float rotateZ){
     updateBallSpeed(rotateX, rotateZ);
     pushMatrix();
+    pushStyle();
+    fill(200, 200, 200);
     translate(xCoordinate,-35,zCoordinate);
+    directionalLight(100, 100, 100, -50, 200, -1);
+    shininess(100);
     sphere(radius);
+    popStyle();
     popMatrix();
   }
   
@@ -34,17 +39,20 @@ class Ball {
   }
   
   void noCollision(){
+    soundPlaying=false;
     zCoordinate -= zSpeed;
     xCoordinate += xSpeed;
   }
   
   void frontalCollision(){
+    if(!soundPlaying)thread("hitSound");
     if (abs(zSpeed) > 0.1) zSpeed *= -0.6;
     else zSpeed = 0;
     zCoordinate -= zSpeed;
   }
   
   void lateralCollision(){
+    if(!soundPlaying)thread("hitSound");
     if (abs(xSpeed) > 0.1) xSpeed *= -0.6;
     else xSpeed = 0;
     xCoordinate += xSpeed;

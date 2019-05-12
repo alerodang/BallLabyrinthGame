@@ -13,7 +13,7 @@ public class Hole {
   public void drawHole() {
     pushMatrix();
     rotateX(PI/2);
-    translate(0, 1, 10);
+    translate(0, 0, 11);
     pushStyle();
     fill(40, 40, 40);
     circle(xCoordinate, zCoordinate, holeWidth);

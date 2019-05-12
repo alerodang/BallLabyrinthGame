@@ -36,5 +36,5 @@ class CollisionDetector{
       ball.lateralCollision();
       lateralCollision = true;
     }
-  }  
+  }
 }
