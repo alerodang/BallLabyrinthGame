@@ -67,7 +67,7 @@ void draw() {
   collisionDetector.detectCollisions();
   fallingDetector.detectFalling();
   ball.drawBall(rotateX, rotateZ);
-  controlBoard1();
+  controlBoard();
 }
 
 void configureScene(){
@@ -97,7 +97,7 @@ void showLoseMessage() {
   textSize(40);
   text("Perdiste! Para reiniciar pulsa r", -270, -200, 0);
 }
-void controlBoard(){
+void controlBoardDirect(){
   if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 2){
@@ -108,7 +108,7 @@ void controlBoard(){
      }
   } 
 }
-void controlBoard1(){
+void controlBoard(){
   if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 2){
@@ -116,8 +116,8 @@ void controlBoard1(){
         maxRotateX = 90*float(split(val,' ')[2]);
      }
   } 
-  if(maxRotateZ>rotateZ+2) rotateZ+=1;
-  else if(maxRotateZ<rotateZ-2) rotateZ-=1;
-  if(maxRotateX>rotateX+2) rotateX+=1;
-  else if(maxRotateX<rotateX-2) rotateX-=1;
+  if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
+  else if(maxRotateZ<rotateZ-0.4) rotateZ-=0.4;
+  if(maxRotateX>rotateX+0.4) rotateX+=0.4;
+  else if(maxRotateX<rotateX-0.4) rotateX-=0.4;
 }
