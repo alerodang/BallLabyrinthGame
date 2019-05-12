@@ -13,6 +13,7 @@ import peasy.*;
 */
 import java.util.List;
 import java.util.Arrays;
+import processing.sound.*;
 
 private float x,y,z;
 private float rotateX, rotateZ;
@@ -22,6 +23,8 @@ private Board board;
 private CollisionDetector collisionDetector;
 private FallingDetector fallingDetector;
 private VictoryDetector victoryDetector;
+SoundFile winSound, hitSound, loseSound;
+boolean soundPlaying, finishSoundPlaying;
 
 void setup() {
   size(1000,1000,P3D);
@@ -34,6 +37,11 @@ void setup() {
   maxAngle = 45;
   ball = new Ball(30, 5);
   board = new Board();
+  soundPlaying=false;
+  finishSoundPlaying=false;
+  hitSound = new SoundFile(this, "sound/hit.wav");
+  winSound = new SoundFile(this, "sound/win.wav");
+  loseSound = new SoundFile(this, "sound/lose.wav");
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
   victoryDetector = new VictoryDetector(board, ball);
@@ -88,10 +96,12 @@ void keyPressed() {
   if (key == 'r') {
     board.setPlaying(true);
     board.setWon(false);
+    finishSoundPlaying=false;
   }
 }
 
 void showLoseMessage() {
+  if(!finishSoundPlaying)thread("loseSound");
   textSize(40);
   pushStyle();
   fill(40, 40, 40);
@@ -100,9 +110,23 @@ void showLoseMessage() {
 }
 
 void showVictoryMessage() {
+  if(!finishSoundPlaying)thread("winSound");
   textSize(40);
   pushStyle();
   fill(40, 40, 40);
   text("Felicidades, ganaste! Para reiniciar pulsa r", -400, -300, 0);
   popStyle();
+}
+
+void hitSound() {
+  hitSound.play();
+  soundPlaying=true;
+}
+void winSound() {
+  winSound.play();
+  finishSoundPlaying=true;
+}
+void loseSound() {
+  loseSound.play();
+  finishSoundPlaying=true;
 }
