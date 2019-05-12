@@ -32,6 +32,7 @@ String val;
 float [] stackRotateZ = {0,0,0,0,0};
 float [] stackRotateX = {0,0,0,0,0};
 float maxRotateZ, maxRotateX;
+PeasyCam peasyCam;
 
 void setup() {
   size(1000,1000,P3D);
