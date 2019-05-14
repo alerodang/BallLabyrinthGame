@@ -156,7 +156,7 @@ void loseSound() {
 void controlBoardDirect(){
   if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
-     if(val!=null && split(val,' ').length > 2){
+     if(val!=null && split(val,' ').length > 3){
        arrayCopy(append(stackRotateZ,float(split(val,' ')[3])), 1, stackRotateZ = new float[5], 0, 5);
        arrayCopy(append(stackRotateX,float(split(val,' ')[2])), 1, stackRotateX = new float[5], 0, 5);
        rotateZ = -90*sort(stackRotateZ)[2];
@@ -167,7 +167,7 @@ void controlBoardDirect(){
 void controlBoard(){
   if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
-     if(val!=null && split(val,' ').length > 2){
+     if(val!=null && split(val,' ').length > 3){
        println(val);
         maxRotateZ = -90*float(split(val,' ')[3]);
         maxRotateX = 90*float(split(val,' ')[2]);
