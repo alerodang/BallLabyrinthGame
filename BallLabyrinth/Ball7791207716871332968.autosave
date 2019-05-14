@@ -5,14 +5,20 @@ class Ball {
   private float xSpeed, zSpeed;
   private final int radius;
   private final float ballSpeed;
-  private float hitSpeed;
+  private boolean leftCollision;
+  private boolean rightCollision;
+  private boolean topCollision;
+  private boolean bottomCollision;
   
   public Ball(int radius, int ballSpeed){
     this.radius = radius;
     this.ballSpeed = (float)ballSpeed / 600.;
     xCoordinate = 240;
     zCoordinate = 240;
-    hitSpeed = 0;
+    leftCollision = false;
+    rightCollision = false;
+    topCollision = false;
+    bottomCollision = false;
   }
     
   void drawBall(float rotateX, float rotateZ){
@@ -26,12 +32,6 @@ class Ball {
     sphere(radius);
     popStyle();
     popMatrix();
-    //println(xSpeed);
-
-  }
-  
-  float getHitSpeed(){
-    return hitSpeed;
   }
   
   void updateBallSpeed(float rotateX, float rotateZ){
@@ -53,37 +53,24 @@ class Ball {
   }
   
   void frontalCollision(){
-    if(abs(zSpeed) < 0.5){ 
-      zSpeed = 0; 
-      return;
-    }
-    if(!soundPlaying){
-      hitSpeed = zSpeed;
-      thread("hitSound");
-    }
-    if(abs(zSpeed) > 0.1){
-      zSpeed -= ballSpeed * rotateX;
-      zSpeed *= -0.6; 
-    }
+    if(!soundPlaying)thread("hitSound");
+    if (abs(zSpeed) > 0.1) zSpeed *= -0.6;
     else zSpeed = 0;
     zCoordinate -= zSpeed;
   }
   
   void lateralCollision(){
-    if(abs(xSpeed) < 0.5){ 
-      xSpeed = 0; 
-      return;
+    if(!ball.getLeftCollision() && ! ball.getRightCollision()){ 
+      if(!soundPlaying)thread("hitSound");
+    } else {       
+      ball.setLeftCollision(false);
+      ball.setRightCollision(false);
     }
-    if(!soundPlaying){
-      hitSpeed = xSpeed;
-      thread("hitSound");
-    }
-    if (abs(xSpeed) > 0.1){ 
-      xSpeed -= ballSpeed * rotateZ;
-      xSpeed *= -0.6;
-    }
+    if (abs(xSpeed) > 0.1) xSpeed *= -0.6;
     else xSpeed = 0;
     xCoordinate += xSpeed;
+    setLeftCollision(true);
+    setRightCollision(true);
   }
   
   float getXSpeed(){
@@ -109,6 +96,38 @@ class Ball {
   public void reset() {
     zCoordinate = 240;
     xCoordinate = 240;
+  }
+  
+  boolean getLeftCollision(){
+    return leftCollision;
+  }
+  
+  boolean getRightCollision(){
+    return rightCollision;
+  }
+  
+  boolean getTopCollision(){
+    return topCollision;
+  }
+  
+  boolean getBottomCollision(){
+    return bottomCollision;
+  }
+  
+  void setLeftCollision(boolean leftCollision){
+    this.leftCollision = leftCollision;
+  }
+  
+  void setRightCollision(boolean rightCollision){
+    this.rightCollision = rightCollision;
+  }
+  
+  void setTopCollision(boolean topCollision){
+    this.topCollision = topCollision;
+  }
+  
+  void setBottomCollision(boolean bottomCollision){
+    this.bottomCollision = bottomCollision;
   }
   
 }
