@@ -26,7 +26,6 @@ class Ball {
     sphere(radius);
     popStyle();
     popMatrix();
-    //println(xSpeed);
 
   }
   
