@@ -56,8 +56,8 @@ void setup() {
   fallingDetector = new FallingDetector(board, ball);
   peasyCam = new PeasyCam(this, width/2, height/2, 0, 1000);
   
-  //String portName = Serial.list()[0];
-  //myPort = new Serial(this, portName,9600);
+  String portName = Serial.list()[0];
+  myPort = new Serial(this, portName,9600);
   victoryDetector = new VictoryDetector(board, ball);
 }
 
@@ -85,7 +85,7 @@ void draw() {
   fallingDetector.detectFalling();
   victoryDetector.checkVictory();
   ball.drawBall(rotateX, rotateZ);
-  //controlBoard();
+  controlBoard();
 }
 
 void configureScene(){
@@ -153,27 +153,28 @@ void loseSound() {
   loseSound.play();
   finishSoundPlaying=true;
 }
-//void controlBoardDirect(){
-//  if(myPort.available()>0){
-//     val = myPort.readStringUntil('\n');
-//     if(val!=null && split(val,' ').length > 2){
-//       arrayCopy(append(stackRotateZ,float(split(val,' ')[3])), 1, stackRotateZ = new float[5], 0, 5);
-//       arrayCopy(append(stackRotateX,float(split(val,' ')[2])), 1, stackRotateX = new float[5], 0, 5);
-//       rotateZ = -90*sort(stackRotateZ)[2];
-//       rotateX = 90*sort(stackRotateX)[2];
-//     }
-//  } 
-//}
-//void controlBoard(){
-//  if(myPort.available()>0){
-//     val = myPort.readStringUntil('\n');
-//     if(val!=null && split(val,' ').length > 2){
-//        maxRotateZ = -90*float(split(val,' ')[3]);
-//        maxRotateX = 90*float(split(val,' ')[2]);
-//     }
-//  } 
-//  if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
-//  else if(maxRotateZ<rotateZ-0.4) rotateZ-=0.4;
-//  if(maxRotateX>rotateX+0.4) rotateX+=0.4;
-//  else if(maxRotateX<rotateX-0.4) rotateX-=0.4;
-//}
+void controlBoardDirect(){
+  if(myPort.available()>0){
+     val = myPort.readStringUntil('\n');
+     if(val!=null && split(val,' ').length > 2){
+       arrayCopy(append(stackRotateZ,float(split(val,' ')[3])), 1, stackRotateZ = new float[5], 0, 5);
+       arrayCopy(append(stackRotateX,float(split(val,' ')[2])), 1, stackRotateX = new float[5], 0, 5);
+       rotateZ = -90*sort(stackRotateZ)[2];
+       rotateX = 90*sort(stackRotateX)[2];
+     }
+  } 
+}
+void controlBoard(){
+  if(myPort.available()>0){
+     val = myPort.readStringUntil('\n');
+     if(val!=null && split(val,' ').length > 2){
+       println(val);
+        maxRotateZ = -90*float(split(val,' ')[3]);
+        maxRotateX = 90*float(split(val,' ')[2]);
+     }
+  } 
+  if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
+  else if(maxRotateZ<rotateZ-0.4) rotateZ-=0.4;
+  if(maxRotateX>rotateX+0.4) rotateX+=0.4;
+  else if(maxRotateX<rotateX-0.4) rotateX-=0.4;
+}
