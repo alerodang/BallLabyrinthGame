@@ -151,7 +151,6 @@ void controlBoard(){
   if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 3){
-       println(val);
         maxRotateZ = -90*float(split(val,' ')[3]);
         maxRotateX = 90*float(split(val,' ')[2]);
      }

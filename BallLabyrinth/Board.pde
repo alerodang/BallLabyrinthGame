@@ -67,10 +67,10 @@ class Board{
   
   private List<Wall> createWalls() {
     List<Wall> walls = new ArrayList();
-    walls.add(new Wall(0, 290, 600, Orientation.X, texture)); //front/dwon
-    walls.add(new Wall(0, -290, 600, Orientation.X, texture)); //bottom/up
-    walls.add(new Wall(290, 0, 600, Orientation.Z, texture)); //right
-    walls.add(new Wall(-290, 0, 600, Orientation.Z, texture)); //left
+    walls.add(new Wall(0, 290, 600, Orientation.X, texture)); 
+    walls.add(new Wall(0, -290, 600, Orientation.X, texture));
+    walls.add(new Wall(290, 0, 600, Orientation.Z, texture));
+    walls.add(new Wall(-290, 0, 600, Orientation.Z, texture));
     
     walls.add(new Wall(100, 0, 400, Orientation.X, texture));
     walls.add(new Wall(200, 150, 200, Orientation.X, texture));
@@ -89,6 +89,8 @@ class Board{
     holes.add(new Hole(150, -60));
     return holes;
   }
+  
+  
   
   private void drawFlag() {
     pushMatrix();
