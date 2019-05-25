@@ -1,16 +1,3 @@
-/**TODO:
- - Girar la pelota al moverse
- - Agujeros
- - Interacción con sensor refactor sacar del main
- - Choque por el lateral de los muros
-  - Problema en la esquina viniendo desde fuera -|
- - Refactor sound to new file
-
-*/
-
-/** TOFIX
-  - When collision with right or left wall, the ball remains stuck to that wall
-*/
 import java.util.List;
 import java.util.Arrays;
 import processing.serial.*;
