@@ -46,8 +46,8 @@ void setup() {
   fallingDetector = new FallingDetector(board, ball);
   backgroundImage = loadImage("backgroundImage.jpg");
   
-  //String portName = Serial.list()[0];
-  //myPort = new Serial(this, portName,9600);
+  String portName = Serial.list()[0];
+  myPort = new Serial(this, portName,9600);
   victoryDetector = new VictoryDetector(board, ball);
 }
 
@@ -94,7 +94,6 @@ void drawMenu(){
   text("Mueve el controlador para mover el tablero.", width/2 - 295, height/2 - 30);
   text("Evita los agujeros para ganar la partida.", width/2 - 295, height/2);
   text("Pulsa S para empezar.", width/2 - 295, height/2 + 50);
-  //text("Press R to restart", width/2 - 220, height/2 + 80);
 }
 
 void configureScene(){
@@ -178,13 +177,13 @@ void controlBoardDirect(){
   } 
 }
 void controlBoard(){
-  /*if(myPort.available()>0){
+  if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 3){
         maxRotateZ = -90*float(split(val,' ')[3]);
         maxRotateX = 90*float(split(val,' ')[2]);
      }
-  } */
+  }
   if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
   else if(maxRotateZ<rotateZ-0.4) rotateZ-=0.4;
   if(maxRotateX>rotateX+0.4) rotateX+=0.4;
