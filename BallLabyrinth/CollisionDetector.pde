@@ -24,7 +24,7 @@ class CollisionDetector{
   
   void horizontalCollisionController(int[] collider){
     if (abs(ball.getZCoordinate() - collider[0]) <= ball.getRadius()
-    && (ball.getXCoordinate() + ball.getRadius() > collider[1]) && (ball.getXCoordinate() - ball.getRadius() < collider[2])) {
+    && (ball.getXCoordinate() + ball.getRadius()> collider[1]) && (ball.getXCoordinate() - ball.getRadius() < collider[2])) {
       ball.frontalCollision();
       frontalCollision = true;
     }
@@ -32,7 +32,7 @@ class CollisionDetector{
   
   void verticalCollisionController(int[] collider){
     if (abs(ball.getXCoordinate() - collider[0]) <= ball.getRadius()
-    && (ball.getZCoordinate() > collider[1]) && (ball.getZCoordinate() < collider[2])) {
+    && (ball.getZCoordinate() + ball.getRadius()> collider[1]) && (ball.getZCoordinate() - ball.getRadius()< collider[2])) {
       ball.lateralCollision();
       lateralCollision = true;
     }
