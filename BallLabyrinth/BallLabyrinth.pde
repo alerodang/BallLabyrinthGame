@@ -16,6 +16,7 @@ import java.util.Arrays;
 import processing.serial.*;
 import processing.sound.*;
 
+private String state;
 private float x,y,z;
 private float rotateX, rotateZ;
 float speed, maxAngle;
@@ -26,6 +27,8 @@ private FallingDetector fallingDetector;
 private VictoryDetector victoryDetector;
 SoundFile winSound, hitSound, loseSound;
 boolean soundPlaying, finishSoundPlaying;
+PImage backgroundImage;
+PFont font, bigFont;
 
 Serial myPort;
 String val;
@@ -34,6 +37,9 @@ float [] stackRotateX = {0,0,0,0,0};
 float maxRotateZ, maxRotateX;
 
 void setup() {
+  font = createFont("andalemo.ttf", 40);
+  bigFont = createFont("andalemo.ttf", 70);
+  state = "menu";
   size(1000,1000,P3D);
   x = width/2;
   y = height/2;
@@ -51,13 +57,18 @@ void setup() {
   loseSound = new SoundFile(this, "sound/lose.wav");
   collisionDetector = new CollisionDetector(board, ball);
   fallingDetector = new FallingDetector(board, ball);
+  backgroundImage = loadImage("backgroundImage.jpg");
   
-  String portName = Serial.list()[0];
-  myPort = new Serial(this, portName,9600);
+  //String portName = Serial.list()[0];
+  //myPort = new Serial(this, portName,9600);
   victoryDetector = new VictoryDetector(board, ball);
 }
 
 void draw() {
+  if(state == "menu"){
+    drawMenu();
+    return;
+  }
   if (!board.getPlaying() || board.getWon()) {
     camera(width/2, 100, (height/2.0) / tan(PI*30.0 / 180.0), width/2, height/2, 0, 0, 1, 0);
     rotateZ = 0;
@@ -82,6 +93,21 @@ void draw() {
   victoryDetector.checkVictory();
   ball.drawBall(rotateX, rotateZ);
   controlBoard();
+}
+
+void drawMenu(){
+  background(backgroundImage);
+  textSize(90);
+  textFont(bigFont);
+  fill(0);
+  text("BallLabyrinth", width/2 - 280, height/2 - 160);
+  textFont(font);
+  textSize(25);
+  text("Trata de llegar con la bola a la bandera.", width/2 - 295, height/2 - 60);
+  text("Mueve el controlador para mover el tablero.", width/2 - 295, height/2 - 30);
+  text("Evita los agujeros para ganar la partida.", width/2 - 295, height/2);
+  text("Pulsa S para empezar.", width/2 - 295, height/2 + 50);
+  //text("Press R to restart", width/2 - 220, height/2 + 80);
 }
 
 void configureScene(){
@@ -111,6 +137,10 @@ void keyPressed() {
     board.setWon(false);
     finishSoundPlaying=false;
   }
+  
+  if (key == 's') {
+    state = "playing";
+  }
 }
 
 void showLoseMessage() {
@@ -124,10 +154,10 @@ void showLoseMessage() {
 
 void showVictoryMessage() {
   if(!finishSoundPlaying)thread("winSound");
-  textSize(40);
+  textSize(35);
   pushStyle();
   fill(40, 40, 40);
-  text("Felicidades, ganaste! Para reiniciar pulsa r", -400, -300, 0);
+  text("Felicidades, ganaste! Para reiniciar pulsa r", -460, -300, 0);
   popStyle();
 }
 
@@ -161,14 +191,14 @@ void controlBoardDirect(){
   } 
 }
 void controlBoard(){
-  if(myPort.available()>0){
+  /*if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 3){
        println(val);
         maxRotateZ = -90*float(split(val,' ')[3]);
         maxRotateX = 90*float(split(val,' ')[2]);
      }
-  } 
+  } */
   if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
   else if(maxRotateZ<rotateZ-0.4) rotateZ-=0.4;
   if(maxRotateX>rotateX+0.4) rotateX+=0.4;
