@@ -46,7 +46,7 @@ void setup() {
   fallingDetector = new FallingDetector(board, ball);
   backgroundImage = loadImage("backgroundImage.jpg");
   
-  String portName = Serial.list()[0];
+  String portName = Serial.list()[3];
   myPort = new Serial(this, portName,9600);
   victoryDetector = new VictoryDetector(board, ball);
 }
@@ -136,16 +136,16 @@ void showLoseMessage() {
   textSize(40);
   pushStyle();
   fill(40, 40, 40);
-  text("Perdiste! Para reiniciar pulsa r", -300, -300, 0);
+  text("Perdiste! Para reiniciar pulsa r", -380, -300, 0);
   popStyle();
 }
 
 void showVictoryMessage() {
   if(!finishSoundPlaying)thread("winSound");
-  textSize(40);
+  textSize(35);
   pushStyle();
   fill(40, 40, 40);
-  text("Felicidades, ganaste! Para reiniciar pulsa r", -400, -300, 0);
+  text("Felicidades, ganaste! Para reiniciar pulsa r", -460, -300, 0);
   popStyle();
 }
 
@@ -173,8 +173,8 @@ void controlBoardDirect(){
      if(val!=null && split(val,' ').length > 3){
        arrayCopy(append(stackRotateZ,float(split(val,' ')[3])), 1, stackRotateZ = new float[5], 0, 5);
        arrayCopy(append(stackRotateX,float(split(val,' ')[2])), 1, stackRotateX = new float[5], 0, 5);
-       rotateZ = -90*sort(stackRotateZ)[2];
-       rotateX = 90*sort(stackRotateX)[2];
+       rotateZ = 90*sort(stackRotateZ)[2];
+       rotateX = -90*sort(stackRotateX)[2];
      }
   } 
 }
@@ -182,8 +182,8 @@ void controlBoard(){
   if(myPort.available()>0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 3){
-        maxRotateZ = -90*float(split(val,' ')[3]);
-        maxRotateX = 90*float(split(val,' ')[2]);
+        maxRotateZ = 90*float(split(val,' ')[3]);
+        maxRotateX = -90*float(split(val,' ')[2]);
      }
   }
   if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
