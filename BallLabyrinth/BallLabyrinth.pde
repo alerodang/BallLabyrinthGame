@@ -83,6 +83,7 @@ void draw() {
 }
 
 void drawMenu(){
+  pushStyle();
   background(backgroundImage);
   textSize(90);
   textFont(bigFont);
@@ -94,6 +95,7 @@ void drawMenu(){
   text("Mueve el controlador para mover el tablero.", width/2 - 295, height/2 - 30);
   text("Evita los agujeros para ganar la partida.", width/2 - 295, height/2);
   text("Pulsa S para empezar.", width/2 - 295, height/2 + 50);
+  popStyle();
 }
 
 void configureScene(){
@@ -134,16 +136,16 @@ void showLoseMessage() {
   textSize(40);
   pushStyle();
   fill(40, 40, 40);
-  text("Perdiste! Para reiniciar pulsa r", -270, -300, 0);
+  text("Perdiste! Para reiniciar pulsa r", -300, -300, 0);
   popStyle();
 }
 
 void showVictoryMessage() {
   if(!finishSoundPlaying)thread("winSound");
-  textSize(35);
+  textSize(40);
   pushStyle();
   fill(40, 40, 40);
-  text("Felicidades, ganaste! Para reiniciar pulsa r", -460, -300, 0);
+  text("Felicidades, ganaste! Para reiniciar pulsa r", -400, -300, 0);
   popStyle();
 }
 
