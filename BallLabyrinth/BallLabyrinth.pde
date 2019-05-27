@@ -167,27 +167,17 @@ void loseSound() {
   loseSound.play();
   finishSoundPlaying=true;
 }
-void controlBoardDirect(){
-  if(myPort.available()>0){
-     val = myPort.readStringUntil('\n');
-     if(val!=null && split(val,' ').length > 3){
-       arrayCopy(append(stackRotateZ,float(split(val,' ')[3])), 1, stackRotateZ = new float[5], 0, 5);
-       arrayCopy(append(stackRotateX,float(split(val,' ')[2])), 1, stackRotateX = new float[5], 0, 5);
-       rotateZ = 90*sort(stackRotateZ)[2];
-       rotateX = -90*sort(stackRotateX)[2];
-     }
-  } 
-}
+
 void controlBoard(){
-  if(myPort.available()>0){
+  if(myPort.available() > 0){
      val = myPort.readStringUntil('\n');
      if(val!=null && split(val,' ').length > 3){
         maxRotateZ = 90*float(split(val,' ')[3]);
         maxRotateX = -90*float(split(val,' ')[2]);
      }
   }
-  if(maxRotateZ>rotateZ+0.4) rotateZ+=0.4;
-  else if(maxRotateZ<rotateZ-0.4) rotateZ-=0.4;
-  if(maxRotateX>rotateX+0.4) rotateX+=0.4;
-  else if(maxRotateX<rotateX-0.4) rotateX-=0.4;
+  if(maxRotateZ > rotateZ + 0.4) rotateZ += 0.4;
+  else if(maxRotateZ < rotateZ - 0.4) rotateZ -= 0.4;
+  if(maxRotateX > rotateX + 0.4) rotateX += 0.4;
+  else if(maxRotateX < rotateX - 0.4) rotateX -= 0.4;
 }
